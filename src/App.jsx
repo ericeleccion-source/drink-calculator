@@ -120,7 +120,38 @@ const MIXES_INIT = {
 /* ===================== Recipes ===================== */
 const RECIPES_INIT = [
   // Coffee drinks
+  
+    {	 
+    id: "cold-brew-coffee",
+    label: "Cold Brew Coffee",
+    sizes: {
+      "12oz": [
+        { name: "Cold Brew Coffee (concentrate + water)", oz: 12 },
+        
+      ],
+      "7oz": [
+        { name: "Cold Brew Coffee (concentrate + water)", oz: 7 },
+       
+      ],
+    },
+  },
+  
+  {	 
+    id: "nitro-cold-brew-coffee",
+    label: "Nitro Cold Brew Coffee",
+    sizes: {
+      "12oz": [
+        { name: "Cold Brew Coffee (concentrate + water)", oz: 12 },
+        
+      ],
+      "7oz": [
+        { name: "Cold Brew Coffee (concentrate + water)", oz: 7 },
+       
+      ],
+    },
+  },
   {
+	 
     id: "tiki-chata",
     label: "Tiki Chata",
     sizes: {
@@ -179,7 +210,7 @@ const RECIPES_INIT = [
         ],
         "7oz": [
           { name: "Cold Brew Coffee (concentrate + water)", oz: 4 },
-          { name: "Caramel Syrup", oz: 0.25 },
+          { name: "Caramel syrup", oz: 0.25 },
           { name: "Mauna Kea Foam (see mix)", oz: 1.75 },
         ],
     },
@@ -202,16 +233,18 @@ const RECIPES_INIT = [
     sizes: {
       
       "16oz": [
+	   { name: "Coconut syrup", oz: 0.75 },
         { name: "Oat Milk", oz: 10 },
-        { name: "Cheesecake syrup", oz: 0.75 },
-        { name: "Cheesecake Foam (see mix)", oz: 4 },
+		{ name: "Dirty Ube Creamer (see mix)", oz: 4 },
+        { name: "Cheesecake Foam (see mix)", oz: 3 },
       ],
 	  
 	  
 	  "7oz": [
+	    { name: "Coconut syrup", oz: 0.25 },
         { name: "Oat Milk", oz: 4 },
-        { name: "Cheesecake syrup", oz: 0.25 },
-        { name: "Cheesecake Foam (see mix)", oz: 1 },
+		{ name: "Dirty Ube Creamer (see mix)", oz: 2 },
+        { name: "Cheesecake Foam (see mix)", oz: 2 },
       ],  
 	  
     },
@@ -222,14 +255,16 @@ const RECIPES_INIT = [
     sizes: {
 
       "16oz": [
-        { name: "Cold Brew Coffee (concentrate + water)", oz: 12 },
+        { name: "Cold Brew Coffee (concentrate + water)", oz: 10 },
+		{ name: "Dirty Ube Creamer (see mix)", oz: 4 },
         { name: "Coconut syrup", oz: 0.75 },
-        { name: "Cheesecake Foam (see mix)", oz: 4 },
+        { name: "Cheesecake Foam (see mix)", oz: 3 },
       ],
 	        "7oz": [
         { name: "Cold Brew Coffee (concentrate + water)", oz: 4 },
+		{ name: "Dirty Ube Creamer (see mix)", oz: 3 },
         { name: "Coconut syrup", oz: 0.25 },
-        { name: "Cheesecake Foam (see mix)", oz: 1 },
+        { name: "Cheesecake Foam (see mix)", oz: 2 },
       ],
     },
   },
@@ -274,16 +309,17 @@ const RECIPES_INIT = [
 /* ===================== Just Added for highlight Rules =========================================== */
 // Highlight rules: ingredient -> which unit(s) to bold
 const highlightRules = {
-  "Coconut Milk": ["oz"],                                // bold Coconut Milk oz
-  "Cold Brew Coffee (concentrate + water)": ["gal"],     // bold Cold Brew Coffee gal
-   "Horchata Mix": ["oz"],     // Horchata Mix oz
-   "Heavy Cream": ["qt"],     // bold Heavy Cream qt
-   "Mauna Kea Foam (see mix)": ["qt"],     // bold Mauna Kea Foam (see mix) qt
-   "Lemonade base (see mix)": ["gal"],     // bold Lemonade base (see mix) gal
-	"Tiki Chata Creamer (see mix)": ["oz"],     // bold Lemonade base (see mix) oz
+	"Coconut Milk": ["qt"],                                // bold Coconut Milk qt
+	"Cold Brew Coffee (concentrate + water)": ["gal"],     // bold Cold Brew Coffee gal
+	"Horchata Mix": ["qt"],     // bold Horchata Mix qt
+	"Heavy Cream": ["qt"],     // bold Heavy Cream qt
+	"Mauna Kea Foam (see mix)": ["qt"],     // bold Mauna Kea Foam (see mix) qt
+	"Lemonade base (see mix)": ["gal"],     // bold Lemonade base (see mix) gal
+	"Tiki Chata Creamer (see mix)": ["qt"],     // bold Lemonade base (see mix) at
 	"Cheesecake Foam (see mix)": ["qt"],     // bold Mauna Kea Foam (see mix) qt
 	"Pandan Foam (see mix)": ["qt"],     // bold Mauna Kea Foam (see mix) qt
 	"Dirty Ube Creamer (see mix)": ["qt"],     // bold Mauna Kea Foam (see mix) qt
+	"Oat Milk": ["qt"],     // bold Mauna Kea Foam (see mix) qt
 
   
 };
@@ -292,6 +328,12 @@ const highlightRules = {
 function isHighlighted(name, unit) {
   return highlightRules[name]?.includes(unit);
 }
+
+function rowHasHighlight(name) {
+  // if any of these unit columns is highlighted, treat the row as highlighted
+  return ["oz", "l", "ml", "qt", "gal"].some((u) => isHighlighted(name, u));
+}
+
 
 
 /* ===================== End  Just Added for highlight Rules ====================================== */
@@ -451,7 +493,8 @@ export default function App() {
   };
 
 const addCoreCoffee = () => {
-    const ids = ["dirty-ube", "mauna-kea", "ube-cheesecake", "dirty-ube-cheesecake"];
+    const ids = ["tiki-chata", "cold-brew-coffee", "nitro-cold-brew-coffee", 
+	"dirty-ube", "mauna-kea", "ube-cheesecake", "dirty-ube-cheesecake"];
     setRows((rs) => {
       const next = [...rs];
       ids.forEach((id) => {
@@ -502,7 +545,106 @@ const addCoreCoffee = () => {
 
   const rawList = toList(grandRaw);
   const addedList = toList(grandAsAdded);
+  
+  
+  
+  
 
+/* ---------- Containers / Packaging math ---------- */
+const OZ_PER_GAL = 128;
+const OZ_PER_QUART = 32;
+const KEG_5_GAL_OZ = 5 * OZ_PER_GAL;
+const BTL_750_ML_OZ = 750 / OZ_TO_ML; // ~25.36 oz
+
+// read raw ounces safely
+const getRawOz = (name) => grandRaw.get(name) || 0;
+// sum multiple keys (handles small naming variations)
+const getRawOzMany = (names) => names.reduce((t, n) => t + (grandRaw.get(n) || 0), 0);
+
+const containers = useMemo(() => {
+  // existing items
+  const coldBrewOz    = getRawOz("Cold Brew Coffee (concentrate + water)");
+  const heavyCreamOz  = getRawOz("Heavy Cream");
+  const coconutMilkOz = getRawOz("Coconut Milk");
+  const oatMilkOz     = getRawOz("Oat Milk");
+
+  // NEW: syrups (750 mL bottles)
+  const coconutSyrupOz = getRawOz("Coconut syrup");
+  const vanillaSyrupOz = getRawOz("Vanilla syrup");
+  // handle both "Caramel syrup" and "Caramel syrup"
+  const caramelSyrupOz = getRawOzMany(["Caramel syrup", "Caramel syrup"]);
+
+  const mk = (totalOz, perContainerOz, label, displayPer) => {
+    const full = Math.floor((totalOz || 0) / perContainerOz);
+    const needed = Math.ceil((totalOz || 0) / perContainerOz);
+    const remainder = (totalOz || 0) - full * perContainerOz;
+    return { totalOz, perContainerOz, needed, full, remainder, label, displayPer };
+  };
+
+  return {
+    // existing
+    coldBrew:    mk(coldBrewOz,    KEG_5_GAL_OZ, "5 gal keg",   "5 gal (640 oz)"),
+    heavyCream:  mk(heavyCreamOz,  OZ_PER_GAL,   "1 gal carton", "1 gal (128 oz)"),
+    coconutMilk: mk(coconutMilkOz, OZ_PER_QUART, "1 quart",      "1 qt (32 oz)"),
+    oatMilk:     mk(oatMilkOz,     OZ_PER_QUART, "1 quart",      "1 qt (32 oz)"),
+
+    // NEW syrup bottles
+    coconutSyrup: mk(coconutSyrupOz, BTL_750_ML_OZ, "750 mL bottle", "750 mL (~25.36 oz)"),
+    vanillaSyrup: mk(vanillaSyrupOz, BTL_750_ML_OZ, "750 mL bottle", "750 mL (~25.36 oz)"),
+    caramelSyrup: mk(caramelSyrupOz, BTL_750_ML_OZ, "750 mL bottle", "750 mL (~25.36 oz)"),
+  };
+}, [grandRaw]);
+
+// UI state: show/hide leftovers
+const [showContainerLeftovers, setShowContainerLeftovers] = useState(true);
+
+// Export the Containers table as CSV
+function exportContainersCSV() {
+  const list = [
+    // existing
+    { name: "Cold Brew Coffee (concentrate + water)", c: containers.coldBrew },
+    { name: "Heavy Cream", c: containers.heavyCream },
+    { name: "Coconut Milk", c: containers.coconutMilk },
+    { name: "Oat Milk", c: containers.oatMilk },
+
+    // NEW syrups
+    { name: "Coconut syrup", c: containers.coconutSyrup },
+    { name: "Vanilla syrup", c: containers.vanillaSyrup },
+    { name: "Caramel syrup (incl. 'Caramel syrup')", c: containers.caramelSyrup },
+  ];
+
+  const rows = [
+    ["Item", "Total oz", "Container size (oz)", "Container label", "Needed", "Full containers", "Leftover oz"],
+    ...list.map(({ name, c }) => [
+      name,
+      toFixed(c.totalOz),
+      String(c.perContainerOz),
+      c.label,
+      String(c.needed),
+      String(c.full),
+      toFixed(c.remainder),
+    ]),
+  ];
+
+  const csv = rows.map(r => r.map(field => {
+    const s = String(field ?? "");
+    return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  }).join(",")).join("\n");
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "containers-needed.csv";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+
+
+  
   // Diagnostics for lemonade 1:1 split
   const lemonAdded = grandAsAdded.get("Lemonade base (see mix)") || 0;
   const lemonadeMixRaw = grandRaw.get("Lemonade mix") || 0;
@@ -511,29 +653,45 @@ const addCoreCoffee = () => {
   /* ===================== UI ===================== */
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6">
-      <header className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Drink Calculator</h1>
-        <div className="flex items-center gap-4">
-          <label className="text-sm flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={showMixNamesInRaw}
-              onChange={(e) => setShowMixNamesInRaw(e.target.checked)}
-            />
-            Show mix names in Raw
-          </label>
-          <button
-            className="border rounded px-3 py-1 text-red-600 hover:bg-red-50"
-            onClick={resetRecipesToDefaults}
-          >
-            Reset to Defaults
-          </button>
-        </div>
-      </header>
+     <header className="flex items-center justify-between print:mb-2">
+  <h1 className="text-2xl font-bold print:text-xl">Drink Calculator</h1>
+  <div className="flex items-center gap-4">
+    {/* Print / Save PDF */}
+    <button
+      className="border rounded px-3 py-1 bg-indigo-50 hover:bg-indigo-100 print:hidden"
+      onClick={() => window.print()}
+    >
+      Print / Save PDF
+    </button>
+
+    {/* Show mix toggle (hidden on paper) */}
+    <label className="text-sm flex items-center gap-2 print:hidden">
+      <input
+        type="checkbox"
+        checked={showMixNamesInRaw}
+        onChange={(e) => setShowMixNamesInRaw(e.target.checked)}
+      />
+      Show mix names in Raw
+    </label>
+
+    {/* Reset (hidden on paper) */}
+    <button
+      className="border rounded px-3 py-1 text-red-600 hover:bg-red-50 print:hidden"
+      onClick={resetRecipesToDefaults}
+    >
+      Reset to Defaults
+    </button>
+  </div>
+</header>
+
 
       {/* New Drink Builder */}
-      <section className="border p-4 bg-white rounded-xl shadow-sm">
+	
+
+      <section className="border p-4 bg-white rounded-xl shadow-sm print:hidden">
         <h2 className="font-semibold mb-2">Add New Drink</h2>
+		
+		
 
         {/* Top controls */}
         <div className="flex gap-2 mb-2 items-center flex-wrap">
@@ -649,7 +807,7 @@ const addCoreCoffee = () => {
 
       {/* Quick Add */}
 		 
-	  <section className="border p-4 bg-white rounded-xl shadow-sm">
+	  <section className="border p-4 bg-white rounded-xl shadow-sm print:hidden">
   <h2 className="font-semibold mb-2">Quick Add</h2>
 
   <div className="flex gap-2 flex-wrap">
@@ -672,7 +830,7 @@ const addCoreCoffee = () => {
 
 
       {/* Batch Rows */}
-      <section className="border p-4 bg-white rounded-xl shadow-sm">
+      <section className="border p-4 bg-white rounded-xl shadow-sm print:hidden">
         <h2 className="font-semibold mb-2">Batch Rows</h2>
         <button
           className="border rounded px-2 mb-2"
@@ -766,7 +924,17 @@ const addCoreCoffee = () => {
         })}
       </section>
   
-     
+     {/* Print-only summary header */}
+<div className="hidden print:block">
+  <div className="mb-2">
+    <div className="text-xl font-bold">Prep Sheet</div>
+    <div className="text-sm text-gray-700">
+      Generated: {new Date().toLocaleString()}
+    </div>
+  </div>
+  <hr className="my-2" />
+</div>
+
 
       {/* Mix & Item Totals (as added) */}
       <section className="border p-4 bg-white rounded-xl shadow-sm">
@@ -810,31 +978,138 @@ const addCoreCoffee = () => {
           <div className="text-right">gal</div>
         </div>
 					
-	{rawList.map((g, i) => (
-  <div key={i} className="grid grid-cols-6 text-sm py-1 border-b">
-    <div>{g.name}</div>
-    <div className={`text-right ${isHighlighted(g.name, "oz") ? "font-bold bg-yellow-200" : ""}`}>
-      {fmt.oz(g.oz)}
-    </div>
-    <div className={`text-right ${isHighlighted(g.name, "l") ? "font-bold bg-yellow-200" : ""}`}>
-      {fmt.l(g.oz)}
-    </div>
-    <div className={`text-right ${isHighlighted(g.name, "ml") ? "font-bold bg-yellow-200" : ""}`}>
-      {fmt.ml(g.oz)}
-    </div>
-    <div className={`text-right ${isHighlighted(g.name, "qt") ? "font-bold bg-yellow-200" : ""}`}>
-      {fmt.qt(g.oz)}
-    </div>
-    <div className={`text-right ${isHighlighted(g.name, "gal") ? "font-bold bg-yellow-200" : ""}`}>
-      {fmt.gal(g.oz)}
-    </div>
-  </div>
-))}
+{rawList.map((g, i) => {
+  const nameClass = rowHasHighlight(g.name) ? "font-bold text-emerald-700" : "";
+  return (
+    <div key={i} className="grid grid-cols-6 text-sm py-1 border-b">
+      {/* Ingredient name gets bold if any measurement is highlighted */}
+      <div className={nameClass}>{g.name}</div>
 
-	
+      {/* Per-cell highlighting stays the same */}
+      <div className={`text-right ${isHighlighted(g.name, "oz") ? "font-bold bg-yellow-200" : ""}`}>
+        {fmt.oz(g.oz)}
+      </div>
+      <div className={`text-right ${isHighlighted(g.name, "l") ? "font-bold bg-yellow-200" : ""}`}>
+        {fmt.l(g.oz)}
+      </div>
+      <div className={`text-right ${isHighlighted(g.name, "ml") ? "font-bold bg-yellow-200" : ""}`}>
+        {fmt.ml(g.oz)}
+      </div>
+      <div className={`text-right ${isHighlighted(g.name, "qt") ? "font-bold bg-yellow-200" : ""}`}>
+        {fmt.qt(g.oz)}
+      </div>
+      <div className={`text-right ${isHighlighted(g.name, "gal") ? "font-bold bg-yellow-200" : ""}`}>
+        {fmt.gal(g.oz)}
+      </div>
+    </div>
+  );
+})}
+
+
 	
 		
       </section>
+	  
+	  {/* Optional page break before containers when printing */}
+<div className="print:break-before-page" />
+
+{/* Containers / Packaging Needed */}
+<section className="border p-4 bg-white rounded-xl shadow-sm">
+  <div className="flex items-center justify-between mb-2">
+    <h2 className="font-semibold">Containers / Packaging Needed</h2>
+    <div className="flex items-center gap-3">
+      <button
+        className="border rounded px-3 py-1 bg-blue-50 hover:bg-blue-100"
+        onClick={exportContainersCSV}
+      >
+        Export CSV
+      </button>
+      <label className="text-sm flex items-center gap-2">
+        <input
+          type="checkbox"
+          checked={showContainerLeftovers}
+          onChange={(e) => setShowContainerLeftovers(e.target.checked)}
+        />
+        Show leftovers
+      </label>
+    </div>
+  </div>
+
+  <div className="grid grid-cols-12 text-xs font-semibold border-b py-2">
+    <div className="col-span-4">Item</div>
+    <div className="col-span-3 text-right">Total (oz)</div>
+    <div className="col-span-3 text-right">Container size</div>
+    <div className="col-span-2 text-right">Needed</div>
+  </div>
+
+  {/* Cold Brew */}
+  <div className="grid grid-cols-12 text-sm py-1 border-b">
+    <div className="col-span-4">Cold Brew Coffee (concentrate + water)</div>
+    <div className="col-span-3 text-right">{toFixed(containers.coldBrew.totalOz)} oz</div>
+    <div className="col-span-3 text-right">{containers.coldBrew.displayPer}</div>
+    <div className="col-span-2 text-right font-semibold">{containers.coldBrew.needed}</div>
+  </div>
+
+  {/* Heavy Cream */}
+  <div className="grid grid-cols-12 text-sm py-1 border-b">
+    <div className="col-span-4">Heavy Cream</div>
+    <div className="col-span-3 text-right">{toFixed(containers.heavyCream.totalOz)} oz</div>
+    <div className="col-span-3 text-right">{containers.heavyCream.displayPer}</div>
+    <div className="col-span-2 text-right font-semibold">{containers.heavyCream.needed}</div>
+  </div>
+
+  {/* Coconut Milk */}
+  <div className="grid grid-cols-12 text-sm py-1 border-b">
+    <div className="col-span-4">Coconut Milk</div>
+    <div className="col-span-3 text-right">{toFixed(containers.coconutMilk.totalOz)} oz</div>
+    <div className="col-span-3 text-right">{containers.coconutMilk.displayPer}</div>
+    <div className="col-span-2 text-right font-semibold">{containers.coconutMilk.needed}</div>
+  </div>
+
+  {/* Oat Milk */}
+  <div className="grid grid-cols-12 text-sm py-1 border-b">
+    <div className="col-span-4">Oat Milk</div>
+    <div className="col-span-3 text-right">{toFixed(containers.oatMilk.totalOz)} oz</div>
+    <div className="col-span-3 text-right">{containers.oatMilk.displayPer}</div>
+    <div className="col-span-2 text-right font-semibold">{containers.oatMilk.needed}</div>
+  </div>
+  
+    {/* Coconut syrup (750 mL) */}
+  <div className="grid grid-cols-12 text-sm py-1 border-b">
+    <div className="col-span-4">Coconut syrup</div>
+    <div className="col-span-3 text-right">{toFixed(containers.coconutSyrup.totalOz)} oz</div>
+    <div className="col-span-3 text-right">{containers.coconutSyrup.displayPer}</div>
+    <div className="col-span-2 text-right font-semibold">{containers.coconutSyrup.needed}</div>
+  </div>
+
+  {/* Vanilla syrup (750 mL) */}
+  <div className="grid grid-cols-12 text-sm py-1 border-b">
+    <div className="col-span-4">Vanilla syrup</div>
+    <div className="col-span-3 text-right">{toFixed(containers.vanillaSyrup.totalOz)} oz</div>
+    <div className="col-span-3 text-right">{containers.vanillaSyrup.displayPer}</div>
+    <div className="col-span-2 text-right font-semibold">{containers.vanillaSyrup.needed}</div>
+  </div>
+
+  {/* Caramel syrup (750 mL) */}
+  <div className="grid grid-cols-12 text-sm py-1">
+    <div className="col-span-4">Caramel syrup</div>
+    <div className="col-span-3 text-right">{toFixed(containers.caramelSyrup.totalOz)} oz</div>
+    <div className="col-span-3 text-right">{containers.caramelSyrup.displayPer}</div>
+    <div className="col-span-2 text-right font-semibold">{containers.caramelSyrup.needed}</div>
+  </div>
+
+
+  {showContainerLeftovers && (
+    <div className="text-xs text-gray-500 mt-2 space-y-1">
+      <div>Cold Brew leftover after full kegs: {toFixed(containers.coldBrew.remainder)} oz</div>
+      <div>Heavy Cream leftover after full cartons: {toFixed(containers.heavyCream.remainder)} oz</div>
+      <div>Coconut Milk leftover after full quarts: {toFixed(containers.coconutMilk.remainder)} oz</div>
+      <div>Oat Milk leftover after full quarts: {toFixed(containers.oatMilk.remainder)} oz</div>
+    </div>
+  )}
+</section>
+
+	  
     </div>
   );
 }
